@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/home/vansh-gandhi/projects/GarageHub/GarageHub-Backend/logs/error/.930520393e7d35d42c4ce58c7b6fd2b5e070757f-audit.json",
+    "files": [
+        {
+            "date": 1731333733236,
+            "name": "/home/vansh-gandhi/projects/GarageHub/GarageHub-Backend/logs/error/2024-11-11.log",
+            "hash": "e43b729898c3903f15b18ade3c2a42ba28a3a62b8ac7ed008cb21e4ecb02efd8"
+        }
+    ],
+    "hashType": "sha256"
+}
