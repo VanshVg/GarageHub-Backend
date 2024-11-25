@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { DATABASE_URL, NODE_ENV } from "@config";
 import { ModelCtor, Sequelize } from "sequelize-typescript";
-import { logger } from "@/lib/logger";
+import { logger } from "@/common/logger";
 
 let db: Sequelize;
 

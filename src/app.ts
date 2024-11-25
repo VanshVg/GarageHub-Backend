@@ -2,7 +2,7 @@ import express, { Application, Router } from "express";
 import { Sequelize } from "sequelize";
 import cors from "cors";
 import { errorMiddleware } from "./middlewares/error.middleware";
-import { logger } from "./lib/logger";
+import { logger } from "./common/logger";
 import { PORT } from "./config";
 import * as http from "http";
 

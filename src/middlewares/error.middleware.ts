@@ -1,6 +1,6 @@
-import { HttpException } from "@/exceptions/http.exception";
-import { generalResponse } from "@/lib/helper/response.helper";
-import { logger } from "@/lib/logger";
+import { HttpException } from "@/common/exceptions/http.exception";
+import { generalResponse } from "@/common/helper/response.helper";
+import { logger } from "@/common/logger";
 import { AxiosError } from "axios";
 import { NextFunction, Request, Response } from "express";
 

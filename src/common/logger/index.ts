@@ -4,7 +4,6 @@ import { existsSync, mkdirSync } from "fs";
 import WinstonDaily from "winston-daily-rotate-file";
 import { LOG_DIR } from "@/config";
 
-// logs dir
 const logDir = join(process.cwd(), LOG_DIR);
 
 if (!existsSync(logDir)) {
@@ -49,7 +48,7 @@ export const logger = winston.createLogger({
       datePattern: "YYYY-MM-DD",
       dirname: `${logDir}/error`, // log file /logs/error/*.log in save
       filename: "%DATE%.log",
-      maxFiles: 30, // 30 Days saved
+      maxFiles: 30,
       handleExceptions: true,
       json: false,
       zippedArchive: true,
@@ -70,10 +69,7 @@ export const stream = {
 };
 
 export const configData = Object.freeze({
-  // Default timer=>5 minutes
   defaultTimer: 300000,
-  // At least schedule time
   atLeastTimer: 120000,
-  // default undo time
   default_undo_time: 20000,
 });
