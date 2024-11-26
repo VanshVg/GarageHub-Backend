@@ -8,7 +8,8 @@ const authRoutes = (): Router => {
 
   const authRouter: Router = Router();
 
-  authRouter.post(`${path}/signup`, validationMiddleware(signupSchema), signup);
+  // authRouter.post(`${path}/signup`, validationMiddleware(signupSchema), signup);
+  authRouter.post(`${path}/signup`, signup);
 
   return authRouter;
 };

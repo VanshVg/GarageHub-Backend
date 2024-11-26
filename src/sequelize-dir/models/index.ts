@@ -16,7 +16,7 @@ export const initSequelize = () => {
         ? {
             ssl: {
               require: true,
-              rejectUnauthorized: false, // Use this if you encounter SSL certificate issues
+              rejectUnauthorized: false,
             },
           }
         : undefined,

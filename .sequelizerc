@@ -1,0 +1,18 @@
+"use strict";
+
+const path = require("path");
+
+module.exports = {
+  config: path.resolve(
+    path.join(process.cwd(), "src/sequelize-dir"),
+    "config.js"
+  ),
+  "seeders-path": path.resolve(
+    path.join(process.cwd(), "src/sequelize-dir"),
+    "seeders"
+  ),
+  "migrations-path": path.resolve(
+    path.join(process.cwd(), "src/sequelize-dir"),
+    "migrations"
+  ),
+};
