@@ -13,15 +13,12 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
   const { first_name, last_name, email, password, role } =
     req.body as UsersAttributes;
 
-  console.log(req.body);
-
   const isUser = await findOneUser({
     where: { email },
   });
   if (isUser) {
-    if (!isUser?.verified) {
-      const currentTime = new Date();
-    }
+    // if (!isUser?.verified) {
+    // }
   }
   const newUser = await createUser({
     first_name,
