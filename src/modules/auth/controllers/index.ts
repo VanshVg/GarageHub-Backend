@@ -12,6 +12,8 @@ import { createOtpData } from "@/repositories/otp.repository";
 import { generalResponse } from "@/common/helper/response.helper";
 import { AUTH_MESSAGE } from "../messages";
 import { GeneralResponseEnum } from "@/common/types";
+import { VERIFICATION_HOURS } from "../types";
+import { randomNumberGenerator } from "@/common/helper/number.helper";
 
 export const signup = catchAsync(async (req: Request, res: Response) => {
   const { first_name, last_name, email, password, role } =
@@ -28,7 +30,7 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
       const currentTime = moment();
 
       const verificationTime = moment(isUser.created_at);
-      console.log(isUser.created_at, ">>>>>>>>>>>", currentTime);
+
       if (currentTime.diff(verificationTime, "hours") > 0) {
         await isUser.destroy();
       } else {
@@ -58,11 +60,11 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
     role,
   });
 
-  const otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+  const otp = randomNumberGenerator(6);
 
   await createOtpData({
     value: otp,
-    expiry_date: moment().add(1, "hour").toISOString(),
+    expiry_date: moment().add(VERIFICATION_HOURS, "hour").toISOString(),
     user_id: newUser.id,
   });
 
