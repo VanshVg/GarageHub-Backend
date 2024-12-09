@@ -12,8 +12,13 @@ import { createOtpData } from "@/repositories/otp.repository";
 import { generalResponse } from "@/common/helper/response.helper";
 import { AUTH_MESSAGE } from "../messages";
 import { GeneralResponseEnum } from "@/common/types";
-import { VERIFICATION_HOURS } from "../types";
+import {
+  OTP_EMAIL_SUBJECT,
+  OTP_EMAIL_TEMPLATE,
+  VERIFICATION_HOURS,
+} from "../types";
 import { randomNumberGenerator } from "@/common/helper/number.helper";
+import { sendEmail } from "@/common/helper/mail.helper";
 
 export const signup = catchAsync(async (req: Request, res: Response) => {
   const { first_name, last_name, email, password, role } =
@@ -66,6 +71,12 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
     value: otp,
     expiry_date: moment().add(VERIFICATION_HOURS, "hour").toISOString(),
     user_id: newUser.id,
+  });
+
+  sendEmail([newUser.email], OTP_EMAIL_SUBJECT, OTP_EMAIL_TEMPLATE, {
+    firstName: newUser.first_name,
+    lastName: newUser.last_name,
+    otp: otp.toString(),
   });
 
   return generalResponse(
