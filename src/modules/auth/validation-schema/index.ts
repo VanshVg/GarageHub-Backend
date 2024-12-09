@@ -10,8 +10,8 @@ const joiData = {
 };
 
 export const signupSchema = Joi.object({
-  firstName: joiData.firstName.required(),
-  lastName: joiData.lastName.required(),
+  first_name: joiData.firstName.required(),
+  last_name: joiData.lastName.required(),
   email: joiData.email.required(),
   password: joiData.password.required(),
 }).options({
