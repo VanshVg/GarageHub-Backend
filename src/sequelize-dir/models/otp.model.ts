@@ -33,7 +33,7 @@ class Otp extends Model<OtpAttributes> {
 
   @AllowNull(false)
   @Column(DataTypes.DATE)
-  expiry_date: Date;
+  expiry_date: Date | string;
 
   @ForeignKey(() => User)
   @AllowNull(false)

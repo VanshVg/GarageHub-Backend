@@ -7,7 +7,7 @@ import {
   CreatedAt,
   Default,
   DeletedAt,
-  HasMany,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
@@ -85,8 +85,8 @@ class User extends Model<UsersAttributes, RequiredUserAttributesType> {
     }
   };
 
-  @HasMany(() => Otp)
-  otps: Otp[];
+  @HasOne(() => Otp)
+  otp: Otp;
 }
 
 export default User;

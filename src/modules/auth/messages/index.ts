@@ -6,4 +6,5 @@ export const AUTH_MESSAGE = Object.freeze({
   INVALID_OTP: "Otp is invalid",
   OTP_EXPIRED: "Verification time has been expired",
   VERIFIED_SUCCESS: "User verified successfully",
+  INVALID_TOKEN: "Unauthorized Request",
 });

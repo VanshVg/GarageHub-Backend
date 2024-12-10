@@ -11,4 +11,5 @@ export const {
   MAIL_PORT,
   MAIL_USER,
   MAIL_PASSWORD,
+  JWT_SECRET,
 } = process.env;

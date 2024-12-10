@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { otpVerification, signup } from "../controllers";
+import { otpVerification, resendOtp, signup } from "../controllers";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import { otpVerificationSchema, signupSchema } from "../validation-schema";
 
@@ -14,6 +14,7 @@ const authRoutes = (): Router => {
     validationMiddleware(otpVerificationSchema),
     otpVerification
   );
+  authRouter.post(`${path}/resend-otp`, resendOtp);
 
   return authRouter;
 };

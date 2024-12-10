@@ -7,6 +7,7 @@ export const OTP_EMAIL_SUBJECT = "Garage Hub OTP Verification";
 export const OTP_EMAIL_TEMPLATE = "otp";
 
 export interface IOtpVerificationBody {
-  email: string;
   otp: number;
 }
+
+export const VERIFICATION_JWT_EXPIRE_TIME = 60 * 60 * 1000;

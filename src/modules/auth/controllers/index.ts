@@ -1,6 +1,7 @@
 // *** Packages ***
 import { Request, Response } from "express";
 import moment from "moment";
+import argon2 from "argon2";
 
 // *** Database ***
 import { catchAsync } from "@/common/helper/catch-async.helper";
@@ -18,9 +19,12 @@ import {
   OTP_EMAIL_TEMPLATE,
   OTP_LENGTH,
   VERIFICATION_HOURS,
+  VERIFICATION_JWT_EXPIRE_TIME,
 } from "../types";
 import { randomNumberGenerator } from "@/common/helper/number.helper";
 import { sendEmail } from "@/common/helper/mail.helper";
+import { generateToken, verifyToken } from "../helpers/token.helper";
+import { logger } from "@/common/logger";
 
 export const signup = catchAsync(async (req: Request, res: Response) => {
   const { first_name, last_name, email, password, role } =
@@ -86,7 +90,12 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
 
   return generalResponse(
     res,
-    null,
+    {
+      token: generateToken(
+        { email: newUser.email },
+        VERIFICATION_JWT_EXPIRE_TIME
+      ),
+    },
     AUTH_MESSAGE.EMAIL_SUCCESS,
     GeneralResponseEnum.success,
     true,
@@ -96,10 +105,29 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
 
 export const otpVerification = catchAsync(
   async (req: Request, res: Response) => {
-    const { email, otp } = req.body as IOtpVerificationBody;
+    const { otp } = req.body as IOtpVerificationBody;
+
+    const { auth } = req.query;
+
+    let decodedData: { email: string };
+
+    try {
+      decodedData = await verifyToken(auth as string);
+    } catch (error) {
+      logger.error(JSON.stringify(error, undefined, 1));
+
+      return generalResponse(
+        res,
+        null,
+        AUTH_MESSAGE.INVALID_TOKEN,
+        GeneralResponseEnum.error,
+        true,
+        401
+      );
+    }
 
     const user = await findOneUser({
-      where: { email },
+      where: { email: decodedData.email },
     });
 
     if (!user) {
@@ -154,3 +182,75 @@ export const otpVerification = catchAsync(
     );
   }
 );
+
+export const resendOtp = catchAsync(async (req: Request, res: Response) => {
+  const { auth } = req.query;
+
+  let decodedData: { email: string };
+
+  try {
+    decodedData = await verifyToken(auth as string);
+  } catch (error) {
+    logger.error(JSON.stringify(error, undefined, 1));
+
+    return generalResponse(
+      res,
+      null,
+      AUTH_MESSAGE.INVALID_TOKEN,
+      GeneralResponseEnum.error,
+      true,
+      401
+    );
+  }
+
+  const user = await findOneUser({
+    where: { email: decodedData.email },
+  });
+
+  if (!user) {
+    return generalResponse(
+      res,
+      null,
+      AUTH_MESSAGE.USER_NOT_FOUND,
+      GeneralResponseEnum.error,
+      true,
+      404
+    );
+  }
+
+  const userOtp = await findOneOtpData({
+    where: { user_id: user.id },
+  });
+
+  const otp = randomNumberGenerator(OTP_LENGTH);
+
+  if (userOtp) {
+    userOtp.value = otp;
+    userOtp.expiry_date = moment()
+      .add(VERIFICATION_HOURS, "hour")
+      .toISOString();
+
+    await userOtp.save();
+  } else {
+    await createOtpData({
+      value: otp,
+      expiry_date: moment().add(VERIFICATION_HOURS, "hour").toISOString(),
+      user_id: user.id,
+    });
+  }
+
+  sendEmail([user.email], OTP_EMAIL_SUBJECT, OTP_EMAIL_TEMPLATE, {
+    firstName: user.first_name,
+    lastName: user.last_name,
+    otp: otp.toString(),
+  });
+
+  return generalResponse(
+    res,
+    null,
+    AUTH_MESSAGE.EMAIL_SUCCESS,
+    GeneralResponseEnum.success,
+    true,
+    200
+  );
+});
