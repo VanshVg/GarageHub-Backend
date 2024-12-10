@@ -6,15 +6,17 @@ import moment from "moment";
 import { catchAsync } from "@/common/helper/catch-async.helper";
 import { UsersAttributes } from "@/sequelize-dir/models/types/users.type";
 import { createUser, findOneUser } from "@/repositories/users.repository";
-import { createOtpData } from "@/repositories/otp.repository";
+import { createOtpData, findOneOtpData } from "@/repositories/otp.repository";
 
 // *** Common ***
 import { generalResponse } from "@/common/helper/response.helper";
 import { AUTH_MESSAGE } from "../messages";
 import { GeneralResponseEnum } from "@/common/types";
 import {
+  IOtpVerificationBody,
   OTP_EMAIL_SUBJECT,
   OTP_EMAIL_TEMPLATE,
+  OTP_LENGTH,
   VERIFICATION_HOURS,
 } from "../types";
 import { randomNumberGenerator } from "@/common/helper/number.helper";
@@ -36,7 +38,10 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
 
       const verificationTime = moment(isUser.created_at);
 
-      if (currentTime.diff(verificationTime, "hours") > 0) {
+      if (
+        currentTime.diff(verificationTime, "hours") >
+        VERIFICATION_HOURS - 1
+      ) {
         await isUser.destroy();
       } else {
         isUsernameAvailable = false;
@@ -65,7 +70,7 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
     role,
   });
 
-  const otp = randomNumberGenerator(6);
+  const otp = randomNumberGenerator(OTP_LENGTH);
 
   await createOtpData({
     value: otp,
@@ -88,3 +93,64 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
     200
   );
 });
+
+export const otpVerification = catchAsync(
+  async (req: Request, res: Response) => {
+    const { email, otp } = req.body as IOtpVerificationBody;
+
+    const user = await findOneUser({
+      where: { email },
+    });
+
+    if (!user) {
+      return generalResponse(
+        res,
+        null,
+        AUTH_MESSAGE.USER_NOT_FOUND,
+        GeneralResponseEnum.error,
+        true,
+        404
+      );
+    }
+
+    const userOtp = await findOneOtpData({
+      where: { user_id: user.id },
+    });
+
+    if (userOtp?.value !== otp) {
+      return generalResponse(
+        res,
+        null,
+        AUTH_MESSAGE.INVALID_OTP,
+        GeneralResponseEnum.error,
+        true,
+        400
+      );
+    }
+
+    if (moment().isAfter(userOtp?.expiry_date)) {
+      await userOtp.destroy();
+
+      return generalResponse(
+        res,
+        null,
+        AUTH_MESSAGE.OTP_EXPIRED,
+        GeneralResponseEnum.error,
+        true,
+        400
+      );
+    }
+
+    user.verified = true;
+    await user.save();
+
+    return generalResponse(
+      res,
+      null,
+      AUTH_MESSAGE.VERIFIED_SUCCESS,
+      GeneralResponseEnum.success,
+      true,
+      200
+    );
+  }
+);

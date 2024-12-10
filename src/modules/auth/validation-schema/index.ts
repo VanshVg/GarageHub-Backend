@@ -1,6 +1,7 @@
 import Joi from "joi";
 
 import { joiCommon } from "@/common/validation-schema";
+import { UserRoles } from "@/common/types";
 
 const joiData = {
   firstName: joiCommon.joiString.max(50).label("First Name").allow("", null),
@@ -14,6 +15,17 @@ export const signupSchema = Joi.object({
   last_name: joiData.lastName.required(),
   email: joiData.email.required(),
   password: joiData.password.required(),
+  role: joiCommon.joiString
+    .valid(UserRoles.Customer, UserRoles.Owner)
+    .label("Role")
+    .required(),
+}).options({
+  abortEarly: false,
+});
+
+export const otpVerificationSchema = Joi.object({
+  email: joiData.email.required(),
+  otp: joiCommon.joiNumber.label("OTP").required(),
 }).options({
   abortEarly: false,
 });
