@@ -1,7 +1,6 @@
 // *** Packages ***
 import { Request, Response } from "express";
 import moment from "moment";
-import argon2 from "argon2";
 
 // *** Database ***
 import { catchAsync } from "@/common/helper/catch-async.helper";
@@ -13,18 +12,18 @@ import { createOtpData, findOneOtpData } from "@/repositories/otp.repository";
 import { generalResponse } from "@/common/helper/response.helper";
 import { AUTH_MESSAGE } from "../messages";
 import { GeneralResponseEnum } from "@/common/types";
+import { IOtpVerificationBody } from "../types";
+import { randomNumberGenerator } from "@/common/helper/number.helper";
+import { sendEmail } from "@/common/helper/mail.helper";
+import { generateToken, verifyToken } from "../helpers/token.helper";
+import { logger } from "@/common/logger";
 import {
-  IOtpVerificationBody,
   OTP_EMAIL_SUBJECT,
   OTP_EMAIL_TEMPLATE,
   OTP_LENGTH,
   VERIFICATION_HOURS,
   VERIFICATION_JWT_EXPIRE_TIME,
-} from "../types";
-import { randomNumberGenerator } from "@/common/helper/number.helper";
-import { sendEmail } from "@/common/helper/mail.helper";
-import { generateToken, verifyToken } from "../helpers/token.helper";
-import { logger } from "@/common/logger";
+} from "../types/constants";
 
 export const signup = catchAsync(async (req: Request, res: Response) => {
   const { first_name, last_name, email, password, role } =
@@ -253,4 +252,9 @@ export const resendOtp = catchAsync(async (req: Request, res: Response) => {
     true,
     200
   );
+});
+
+export const login = catchAsync(async (req: Request, res: Response) => {
+  const { first_name, last_name, email, password, role } =
+    req.body as UsersAttributes;
 });
