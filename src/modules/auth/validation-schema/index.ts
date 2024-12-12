@@ -29,3 +29,10 @@ export const otpVerificationSchema = Joi.object({
 }).options({
   abortEarly: false,
 });
+
+export const loginSchema = Joi.object({
+  email: joiData.email.required(),
+  password: joiData.password.required(),
+}).options({
+  abortEarly: false,
+});

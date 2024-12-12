@@ -1,6 +1,7 @@
 // *** Packages ***
 import { Request, Response } from "express";
 import moment from "moment";
+import argon2 from "argon2";
 
 // *** Database ***
 import { catchAsync } from "@/common/helper/catch-async.helper";
@@ -18,6 +19,7 @@ import { sendEmail } from "@/common/helper/mail.helper";
 import { generateToken, verifyToken } from "../helpers/token.helper";
 import { logger } from "@/common/logger";
 import {
+  ACCESS_TOKEN_EXPIRE_TIME,
   OTP_EMAIL_SUBJECT,
   OTP_EMAIL_TEMPLATE,
   OTP_LENGTH,
@@ -255,6 +257,64 @@ export const resendOtp = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const login = catchAsync(async (req: Request, res: Response) => {
-  const { first_name, last_name, email, password, role } =
-    req.body as UsersAttributes;
+  const { email, password } = req.body as UsersAttributes;
+
+  const user = await findOneUser({
+    where: { email },
+  });
+  if (!user) {
+    return generalResponse(
+      res,
+      null,
+      AUTH_MESSAGE.INVALID_CREDENTIALS,
+      GeneralResponseEnum.error,
+      true,
+      404
+    );
+  }
+  if (!user.verified) {
+    return generalResponse(
+      res,
+      null,
+      AUTH_MESSAGE.NOT_ACTIVATED,
+      GeneralResponseEnum.error,
+      true,
+      404
+    );
+  }
+
+  const passwordResult = await argon2.verify(password, user.password);
+  if (!passwordResult) {
+    return generalResponse(
+      res,
+      null,
+      AUTH_MESSAGE.INVALID_CREDENTIALS,
+      GeneralResponseEnum.error,
+      true,
+      404
+    );
+  }
+
+  const accessToken = generateToken(
+    { email: user.email, role: user.role },
+    ACCESS_TOKEN_EXPIRE_TIME
+  );
+
+  return generalResponse(
+    res,
+    {
+      user: {
+        id: user.id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        role: user.role,
+      },
+      accessToken,
+    },
+    AUTH_MESSAGE.LOGIN_SUCCESS,
+    GeneralResponseEnum.success,
+    true,
+    200
+  );
 });

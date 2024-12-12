@@ -1,7 +1,11 @@
 import { Router } from "express";
-import { otpVerification, resendOtp, signup } from "../controllers";
+import { login, otpVerification, resendOtp, signup } from "../controllers";
 import validationMiddleware from "@/middlewares/validation.middleware";
-import { otpVerificationSchema, signupSchema } from "../validation-schema";
+import {
+  loginSchema,
+  otpVerificationSchema,
+  signupSchema,
+} from "../validation-schema";
 
 const authRoutes = (): Router => {
   const path = "/auth";
@@ -15,6 +19,7 @@ const authRoutes = (): Router => {
     otpVerification
   );
   authRouter.post(`${path}/resend-otp`, resendOtp);
+  authRouter.post(`${path}/login`, validationMiddleware(loginSchema), login);
 
   return authRouter;
 };
