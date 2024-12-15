@@ -28,7 +28,7 @@ import {
 } from "../types/constants";
 
 export const signup = catchAsync(async (req: Request, res: Response) => {
-  const { first_name, last_name, email, password, role } =
+  const { first_name, last_name, email, password } =
     req.body as UsersAttributes;
 
   const isUser = await findOneUser({
@@ -67,42 +67,71 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
     );
   }
 
-  const newUser = await createUser({
+  await createUser({
     first_name,
     last_name,
     email,
     password,
-    role,
-  });
-
-  const otp = randomNumberGenerator(OTP_LENGTH);
-
-  await createOtpData({
-    value: otp,
-    expiry_date: moment().add(VERIFICATION_HOURS, "hour").toISOString(),
-    user_id: newUser.id,
-  });
-
-  sendEmail([newUser.email], OTP_EMAIL_SUBJECT, OTP_EMAIL_TEMPLATE, {
-    firstName: newUser.first_name,
-    lastName: newUser.last_name,
-    otp: otp.toString(),
   });
 
   return generalResponse(
     res,
-    {
-      token: generateToken(
-        { email: newUser.email },
-        VERIFICATION_JWT_EXPIRE_TIME
-      ),
-    },
-    AUTH_MESSAGE.EMAIL_SUCCESS,
+    null,
+    AUTH_MESSAGE.SIGNUP_SUCCESS,
     GeneralResponseEnum.success,
-    true,
+    false,
     200
   );
 });
+
+export const updateUserRole = catchAsync(
+  async (req: Request, res: Response) => {
+    const { role, email } = req.body;
+
+    const user = await findOneUser({ where: { email } });
+    if (!user) {
+      return generalResponse(
+        res,
+        null,
+        AUTH_MESSAGE.USER_NOT_FOUND,
+        GeneralResponseEnum.error,
+        true,
+        404
+      );
+    }
+
+    user.role = role;
+    await user.save();
+
+    const otp = randomNumberGenerator(OTP_LENGTH);
+
+    await createOtpData({
+      value: otp,
+      expiry_date: moment().add(VERIFICATION_HOURS, "hour").toISOString(),
+      user_id: user.id,
+    });
+
+    sendEmail([user.email], OTP_EMAIL_SUBJECT, OTP_EMAIL_TEMPLATE, {
+      firstName: user.first_name,
+      lastName: user.last_name,
+      otp: otp.toString(),
+    });
+
+    return generalResponse(
+      res,
+      {
+        token: generateToken(
+          { email: user.email },
+          VERIFICATION_JWT_EXPIRE_TIME
+        ),
+      },
+      AUTH_MESSAGE.EMAIL_SUCCESS,
+      GeneralResponseEnum.success,
+      true,
+      200
+    );
+  }
+);
 
 export const otpVerification = catchAsync(
   async (req: Request, res: Response) => {

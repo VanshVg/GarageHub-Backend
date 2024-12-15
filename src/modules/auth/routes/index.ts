@@ -1,10 +1,17 @@
 import { Router } from "express";
-import { login, otpVerification, resendOtp, signup } from "../controllers";
+import {
+  login,
+  otpVerification,
+  resendOtp,
+  signup,
+  updateUserRole,
+} from "../controllers";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import {
   loginSchema,
   otpVerificationSchema,
   signupSchema,
+  updateRoleSchema,
 } from "../validation-schema";
 
 const authRoutes = (): Router => {
@@ -13,6 +20,11 @@ const authRoutes = (): Router => {
   const authRouter: Router = Router();
 
   authRouter.post(`${path}/signup`, validationMiddleware(signupSchema), signup);
+  authRouter.post(
+    `${path}/update-role`,
+    validationMiddleware(updateRoleSchema),
+    updateUserRole
+  );
   authRouter.post(
     `${path}/verify-otp`,
     validationMiddleware(otpVerificationSchema),

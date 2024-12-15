@@ -52,7 +52,7 @@ class User extends Model<UsersAttributes, RequiredUserAttributesType> {
   password: string;
 
   @Column(DataTypes.ENUM(...Object.values(UserRoles)))
-  role: UserRoles;
+  role?: UserRoles;
 
   @Default(false)
   @Column(DataTypes.BOOLEAN)

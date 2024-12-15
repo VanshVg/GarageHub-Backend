@@ -19,7 +19,7 @@ module.exports = {
           password: { type: Sequelize.TEXT },
           role: {
             type: Sequelize.ENUM("Customer", "Owner"),
-            allowNull: false,
+            allowNull: true,
           },
           verified: {
             type: Sequelize.BOOLEAN,

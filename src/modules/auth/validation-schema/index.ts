@@ -15,10 +15,16 @@ export const signupSchema = Joi.object({
   last_name: joiData.lastName.required(),
   email: joiData.email.required(),
   password: joiData.password.required(),
+}).options({
+  abortEarly: false,
+});
+
+export const updateRoleSchema = Joi.object({
   role: joiCommon.joiString
     .valid(UserRoles.Customer, UserRoles.Owner)
     .label("Role")
     .required(),
+  email: joiData.email.required(),
 }).options({
   abortEarly: false,
 });
