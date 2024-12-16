@@ -312,7 +312,7 @@ export const login = catchAsync(async (req: Request, res: Response) => {
     );
   }
 
-  const passwordResult = await argon2.verify(password, user.password);
+  const passwordResult = await argon2.verify(user.password, password);
   if (!passwordResult) {
     return generalResponse(
       res,
@@ -328,6 +328,9 @@ export const login = catchAsync(async (req: Request, res: Response) => {
     { email: user.email, role: user.role },
     ACCESS_TOKEN_EXPIRE_TIME
   );
+
+  user.last_login_date = moment().toDate();
+  await user.save();
 
   return generalResponse(
     res,
