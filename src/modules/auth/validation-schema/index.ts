@@ -42,3 +42,9 @@ export const loginSchema = Joi.object({
 }).options({
   abortEarly: false,
 });
+
+export const forgotPasswordSchema = Joi.object({
+  email: joiData.email.required(),
+}).options({
+  abortEarly: false,
+});

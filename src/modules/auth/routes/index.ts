@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  forgotPassword,
   login,
   otpVerification,
   resendOtp,
@@ -8,6 +9,7 @@ import {
 } from "../controllers";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import {
+  forgotPasswordSchema,
   loginSchema,
   otpVerificationSchema,
   signupSchema,
@@ -32,6 +34,11 @@ const authRoutes = (): Router => {
   );
   authRouter.post(`${path}/resend-otp`, resendOtp);
   authRouter.post(`${path}/login`, validationMiddleware(loginSchema), login);
+  authRouter.post(
+    `${path}/forgot-password`,
+    validationMiddleware(forgotPasswordSchema),
+    forgotPassword
+  );
 
   return authRouter;
 };

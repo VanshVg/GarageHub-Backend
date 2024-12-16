@@ -350,3 +350,71 @@ export const login = catchAsync(async (req: Request, res: Response) => {
     200
   );
 });
+
+export const forgotPassword = catchAsync(
+  async (req: Request, res: Response) => {
+    const { email } = req.body;
+
+    const user = await findOneUser({ where: { email } });
+    if (!user) {
+      return generalResponse(
+        res,
+        null,
+        AUTH_MESSAGE.USER_NOT_FOUND,
+        GeneralResponseEnum.error,
+        true,
+        404
+      );
+    }
+
+    if (!user.verified) {
+      return generalResponse(
+        res,
+        null,
+        AUTH_MESSAGE.NOT_ACTIVATED,
+        GeneralResponseEnum.error,
+        true,
+        404
+      );
+    }
+
+    const otp = randomNumberGenerator(OTP_LENGTH);
+
+    const otpData = await findOneOtpData({
+      where: { user_id: user.id },
+    });
+    if (otpData) {
+      otpData.value = otp;
+      otpData.expiry_date = moment()
+        .add(VERIFICATION_HOURS, "hour")
+        .toISOString();
+
+      await otpData.save();
+    } else {
+      await createOtpData({
+        value: otp,
+        expiry_date: moment().add(VERIFICATION_HOURS, "hour").toISOString(),
+        user_id: user.id,
+      });
+    }
+    sendEmail([user.email], OTP_EMAIL_SUBJECT, OTP_EMAIL_TEMPLATE, {
+      firstName: user.first_name,
+      lastName: user.last_name,
+      otp: otp.toString(),
+    });
+
+    return generalResponse(
+      res,
+      {
+        token: generateToken(
+          { email: user.email },
+          VERIFICATION_JWT_EXPIRE_TIME
+        ),
+      },
+      AUTH_MESSAGE.EMAIL_SUCCESS,
+      GeneralResponseEnum.success,
+      true,
+      200
+    );
+  }
+);
