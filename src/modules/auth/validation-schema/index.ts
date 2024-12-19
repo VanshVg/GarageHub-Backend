@@ -30,7 +30,6 @@ export const updateRoleSchema = Joi.object({
 });
 
 export const otpVerificationSchema = Joi.object({
-  email: joiData.email.required(),
   otp: joiCommon.joiNumber.label("OTP").required(),
 }).options({
   abortEarly: false,

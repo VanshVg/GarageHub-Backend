@@ -139,7 +139,7 @@ export const otpVerification = catchAsync(
 
     const { auth } = req.query;
 
-    let decodedData: { email: string };
+    let decodedData: { data: { email: string } };
 
     try {
       decodedData = await verifyToken(auth as string);
@@ -157,7 +157,7 @@ export const otpVerification = catchAsync(
     }
 
     const user = await findOneUser({
-      where: { email: decodedData.email },
+      where: { email: decodedData?.data?.email },
     });
 
     if (!user) {
@@ -216,7 +216,7 @@ export const otpVerification = catchAsync(
 export const resendOtp = catchAsync(async (req: Request, res: Response) => {
   const { auth } = req.query;
 
-  let decodedData: { email: string };
+  let decodedData: { data: { email: string } };
 
   try {
     decodedData = await verifyToken(auth as string);
@@ -234,7 +234,7 @@ export const resendOtp = catchAsync(async (req: Request, res: Response) => {
   }
 
   const user = await findOneUser({
-    where: { email: decodedData.email },
+    where: { email: decodedData?.data?.email },
   });
 
   if (!user) {
