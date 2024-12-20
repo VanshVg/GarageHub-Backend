@@ -10,4 +10,5 @@ export const AUTH_MESSAGE = Object.freeze({
   NOT_ACTIVATED: "User isn't activated",
   INVALID_CREDENTIALS: "Invalid credentials",
   LOGIN_SUCCESS: "Login Successful",
+  PASSWORD_RESET_SUCCESS: "Password reset successful",
 });

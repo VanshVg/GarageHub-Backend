@@ -4,6 +4,7 @@ import {
   login,
   otpVerification,
   resendOtp,
+  resetPassword,
   signup,
   updateUserRole,
 } from "../controllers";
@@ -12,6 +13,7 @@ import {
   forgotPasswordSchema,
   loginSchema,
   otpVerificationSchema,
+  resetPasswordSchema,
   signupSchema,
   updateRoleSchema,
 } from "../validation-schema";
@@ -38,6 +40,11 @@ const authRoutes = (): Router => {
     `${path}/forgot-password`,
     validationMiddleware(forgotPasswordSchema),
     forgotPassword
+  );
+  authRouter.post(
+    `${path}/reset-password`,
+    validationMiddleware(resetPasswordSchema),
+    resetPassword
   );
 
   return authRouter;

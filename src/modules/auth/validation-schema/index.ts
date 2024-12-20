@@ -47,3 +47,9 @@ export const forgotPasswordSchema = Joi.object({
 }).options({
   abortEarly: false,
 });
+
+export const resetPasswordSchema = Joi.object({
+  password: joiData.password.required(),
+}).options({
+  abortEarly: false,
+});

@@ -418,3 +418,52 @@ export const forgotPassword = catchAsync(
     );
   }
 );
+
+export const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  const { auth } = req.query;
+  const { password } = req.body;
+
+  let decodedData: { data: { email: string } };
+
+  try {
+    decodedData = await verifyToken(auth as string);
+  } catch (error) {
+    logger.error(JSON.stringify(error, undefined, 1));
+
+    return generalResponse(
+      res,
+      null,
+      AUTH_MESSAGE.INVALID_TOKEN,
+      GeneralResponseEnum.error,
+      true,
+      401
+    );
+  }
+
+  const user = await findOneUser({
+    where: { email: decodedData?.data?.email },
+  });
+
+  if (!user) {
+    return generalResponse(
+      res,
+      null,
+      AUTH_MESSAGE.USER_NOT_FOUND,
+      GeneralResponseEnum.error,
+      true,
+      404
+    );
+  }
+
+  user.password = password;
+  await user.save();
+
+  return generalResponse(
+    res,
+    null,
+    AUTH_MESSAGE.PASSWORD_RESET_SUCCESS,
+    GeneralResponseEnum.success,
+    true,
+    200
+  );
+});
