@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:tsc": "tsc && tsc-alias",
     "build": "rimraf dist && swc src -d dist --source-maps --copy-files && npm run build:tsc",
-    "start": "cross-env NODE_ENV=production node dist/server.js"
+    "start": "cross-env NODE_ENV=production node dist/server.js",
+    "seed:admin": "ts-node ./src/sequelize-dir/seeders/user.seeder.ts",
+    "seed": "npm run seed:admin"
   },
   "keywords": [],
   "author": "",
