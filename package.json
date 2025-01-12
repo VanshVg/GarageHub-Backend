@@ -8,8 +8,10 @@
     "build:tsc": "tsc && tsc-alias",
     "build": "rimraf dist && swc src -d dist --source-maps --copy-files && npm run build:tsc",
     "start": "cross-env NODE_ENV=production node dist/server.js",
-    "seed:admin": "ts-node ./src/sequelize-dir/seeders/user.seeder.ts",
-    "seed": "npm run seed:admin"
+    "seed:user": "ts-node ./src/sequelize-dir/seeders/users.seeder.ts",
+    "seed:state": "ts-node ./src/sequelize-dir/seeders/states.seeder.ts",
+    "seed:city": "ts-node ./src/sequelize-dir/seeders/cities.seeder.ts",
+    "seed": "npm run seed:user && npm run seed:state && npm run seed:city"
   },
   "keywords": [],
   "author": "",
