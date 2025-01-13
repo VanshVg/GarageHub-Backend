@@ -7,6 +7,7 @@ import {
   CreatedAt,
   Default,
   DeletedAt,
+  HasMany,
   HasOne,
   Model,
   PrimaryKey,
@@ -22,6 +23,7 @@ import { DataTypes, Sequelize } from "sequelize";
 import argon2 from "argon2";
 import Otp from "./otp.model";
 import { UserRoles } from "@/common/types";
+import Garage from "./garages.model";
 
 @Table({
   tableName: "users",
@@ -87,6 +89,9 @@ class User extends Model<UsersAttributes, RequiredUserAttributesType> {
 
   @HasOne(() => Otp)
   otp: Otp;
+
+  @HasMany(() => Garage)
+  garages: Garage[];
 }
 
 export default User;
