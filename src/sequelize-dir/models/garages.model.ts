@@ -95,7 +95,7 @@ class Garage extends Model<GarageAttributes, RequiredGarageAttributesType> {
   deleted_at: Date;
 
   @BelongsTo(() => User)
-  user: User;
+  owner: User;
 }
 
 export default Garage;
