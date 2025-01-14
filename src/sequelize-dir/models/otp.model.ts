@@ -28,7 +28,7 @@ class Otp extends Model<OtpAttributes> {
   id: number;
 
   @AllowNull(false)
-  @Column(DataTypes.INTEGER)
+  @Column({ type: DataTypes.INTEGER, validate: { len: [6, 6] } })
   value: number;
 
   @AllowNull(false)

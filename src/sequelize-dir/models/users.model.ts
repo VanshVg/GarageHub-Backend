@@ -47,7 +47,7 @@ class User extends Model<UsersAttributes, RequiredUserAttributesType> {
 
   @Unique
   @AllowNull(false)
-  @Column(DataTypes.STRING)
+  @Column({ type: DataTypes.STRING, validate: { isEmail: true } })
   email: string;
 
   @Column(DataTypes.TEXT)

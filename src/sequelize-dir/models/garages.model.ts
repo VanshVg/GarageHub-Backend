@@ -7,6 +7,7 @@ import {
   Default,
   DeletedAt,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -14,12 +15,13 @@ import {
 } from "sequelize-typescript";
 import {
   GarageAttributes,
+  GarageStatus,
   RequiredGarageAttributesType,
 } from "./types/garages.type";
 import { DataTypes } from "sequelize";
 import User from "./users.model";
 import City from "./cities.model";
-import { GarageStatus } from "@/common/types";
+import Service from "./services.model";
 
 @Table({
   tableName: "garages",
@@ -96,6 +98,9 @@ class Garage extends Model<GarageAttributes, RequiredGarageAttributesType> {
 
   @BelongsTo(() => User)
   owner: User;
+
+  @HasMany(() => Service)
+  services: Service[];
 }
 
 export default Garage;

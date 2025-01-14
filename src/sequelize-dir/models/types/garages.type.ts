@@ -1,5 +1,9 @@
-import { GarageStatus } from "@/common/types";
 import { RequiredKeyType, TimeStampAttributes } from ".";
+
+export enum GarageStatus {
+  Active = "active",
+  Inactive = "inactive",
+}
 
 export interface GarageAttributes extends TimeStampAttributes {
   id?: number;

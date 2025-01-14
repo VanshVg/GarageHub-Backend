@@ -1,3 +1,5 @@
+import { ServiceCategoryAttributes } from "@/sequelize-dir/models/types/service-categories.type";
+
 export const STATE_DATA = [
   { id: 1, name: "Punjab" },
   { id: 2, name: "Telangana" },
@@ -1528,5 +1530,40 @@ export const CITY_DATA = [
     state_id: 17,
     latitude: 20.95,
     longitude: 85.23,
+  },
+];
+
+export const SERVICE_CATEGORY_DATA: ServiceCategoryAttributes[] = [
+  {
+    name: "general_maintenance",
+    label: "General Maintenance",
+  },
+  {
+    name: "repair",
+    label: "Repair",
+  },
+  {
+    name: "diagnostic",
+    label: "Diagnostic",
+  },
+  {
+    name: "specialized",
+    label: "Specialized",
+  },
+  {
+    name: "performance_upgrades",
+    label: "Performance Upgrades",
+  },
+  {
+    name: "vehicle_inspection_certification",
+    label: "Vehicle Inspection and Certification",
+  },
+  {
+    name: "emergency",
+    label: "Emergency",
+  },
+  {
+    name: "other",
+    label: "Other",
   },
 ];
