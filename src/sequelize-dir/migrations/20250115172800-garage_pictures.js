@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
       await queryInterface.createTable(
-        "garages",
+        "garage_pictures",
         {
           id: {
             type: Sequelize.INTEGER,
@@ -13,47 +13,25 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true,
           },
-          owner_id: {
+          garage_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
-              model: "users",
+              model: "garages",
               key: "id",
             },
             onUpdate: "CASCADE",
             onDelete: "CASCADE",
           },
-          name: { type: Sequelize.STRING, allowNull: false },
-          description: { type: Sequelize.TEXT, allowNull: true },
-          contact_no: {
+          url: {
             type: Sequelize.STRING,
             allowNull: false,
-            validate: { is: /^[0-9]{10}$/ },
+            validate: { isUrl: true },
+            unique: true,
           },
-          email: {
+          alt_text: {
             type: Sequelize.STRING,
             allowNull: true,
-            validate: { isEmail: true },
-          },
-          address: { type: Sequelize.TEXT, allowNull: false },
-          city_id: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-            references: { model: "cities", key: "id" },
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
-          },
-          pincode: {
-            type: Sequelize.STRING(6),
-            allowNull: false,
-            validate: { len: [6, 6] },
-          },
-          start_time: { type: Sequelize.TIME, allowNull: false },
-          end_time: { type: Sequelize.TIME, allowNull: false },
-          status: {
-            type: Sequelize.ENUM("active", "inactive"),
-            allowNull: false,
-            defaultValue: "active",
           },
           created_at: {
             type: Sequelize.DATE,
@@ -69,8 +47,7 @@ module.exports = {
         },
         { transaction: t }
       );
-      await queryInterface.addIndex("garages", ["city_id"], { transaction: t });
-      await queryInterface.addIndex("garages", ["owner_id"], {
+      await queryInterface.addIndex("garage_pictures", ["url"], {
         transaction: t,
       });
     });
@@ -78,7 +55,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable("garages", {
+      await queryInterface.dropTable("garage_pictures", {
         transaction: t,
         cascade: true,
       });

@@ -22,6 +22,7 @@ import { DataTypes } from "sequelize";
 import User from "./users.model";
 import City from "./cities.model";
 import Service from "./services.model";
+import GaragePicture from "./garage-pictures.model";
 
 @Table({
   tableName: "garages",
@@ -101,6 +102,9 @@ class Garage extends Model<GarageAttributes, RequiredGarageAttributesType> {
 
   @HasMany(() => Service)
   services: Service[];
+
+  @HasMany(() => GaragePicture)
+  garage_pictures: GaragePicture[];
 }
 
 export default Garage;

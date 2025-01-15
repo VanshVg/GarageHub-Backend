@@ -20,6 +20,8 @@ module.exports = {
               model: "states",
               key: "id",
             },
+            onUpdate: "CASCADE",
+            onDelete: "CASCADE",
           },
           latitude: { type: Sequelize.FLOAT, allowNull: false },
           longitude: { type: Sequelize.FLOAT, allowNull: false },
