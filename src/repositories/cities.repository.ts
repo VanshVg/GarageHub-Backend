@@ -5,3 +5,4 @@ const CityRepo = getRepository<City>(City.name);
 
 export const bulkCreateCities = CityRepo.bulkCreate;
 export const findAllCities = CityRepo.getAll;
+export const findOneCity = CityRepo.get;

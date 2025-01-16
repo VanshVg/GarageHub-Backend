@@ -30,6 +30,11 @@ class State extends Model<StatesAttributes, RequiredStatesAttributesType> {
 
   @HasMany(() => City)
   cities: City[];
+
+  readonly toJSON = () => {
+    const values = Object.assign({}, this.get());
+    return values;
+  };
 }
 
 export default State;

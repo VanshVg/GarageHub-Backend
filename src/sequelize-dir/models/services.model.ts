@@ -76,6 +76,11 @@ class Service extends Model<ServiceAttributes, RequiredServiceAttributesType> {
 
   @BelongsTo(() => Garage)
   garage: Garage;
+
+  readonly toJSON = () => {
+    const values = Object.assign({}, this.get());
+    return values;
+  };
 }
 
 export default Service;

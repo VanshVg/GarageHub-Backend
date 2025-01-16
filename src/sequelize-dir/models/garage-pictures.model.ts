@@ -57,6 +57,11 @@ class GaragePicture extends Model<
 
   @BelongsTo(() => Garage)
   garage: Garage;
+
+  readonly toJSON = () => {
+    const values = Object.assign({}, this.get());
+    return values;
+  };
 }
 
 export default GaragePicture;

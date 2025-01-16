@@ -48,6 +48,11 @@ class Otp extends Model<OtpAttributes> {
 
   @BelongsTo(() => User)
   user: User;
+
+  readonly toJSON = () => {
+    const values = Object.assign({}, this.get());
+    return values;
+  };
 }
 
 export default Otp;

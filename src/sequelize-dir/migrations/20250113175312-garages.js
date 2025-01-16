@@ -48,8 +48,8 @@ module.exports = {
             allowNull: false,
             validate: { len: [6, 6] },
           },
-          start_time: { type: Sequelize.TIME, allowNull: false },
-          end_time: { type: Sequelize.TIME, allowNull: false },
+          start_time: { type: Sequelize.STRING, allowNull: false },
+          end_time: { type: Sequelize.STRING, allowNull: false },
           status: {
             type: Sequelize.ENUM("active", "inactive"),
             allowNull: false,

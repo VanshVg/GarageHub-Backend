@@ -39,6 +39,11 @@ class ServiceCategory extends Model<
 
   @HasMany(() => Service)
   services: Service[];
+
+  readonly toJSON = () => {
+    const values = Object.assign({}, this.get());
+    return values;
+  };
 }
 
 export default ServiceCategory;

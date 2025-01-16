@@ -76,11 +76,11 @@ class Garage extends Model<GarageAttributes, RequiredGarageAttributesType> {
   pincode: string;
 
   @AllowNull(false)
-  @Column(DataTypes.TIME)
+  @Column(DataTypes.STRING)
   start_time: string;
 
   @AllowNull(false)
-  @Column(DataTypes.TIME)
+  @Column(DataTypes.STRING)
   end_time: string;
 
   @AllowNull(false)
@@ -105,6 +105,11 @@ class Garage extends Model<GarageAttributes, RequiredGarageAttributesType> {
 
   @HasMany(() => GaragePicture)
   garage_pictures: GaragePicture[];
+
+  readonly toJSON = () => {
+    const values = Object.assign({}, this.get());
+    return values;
+  };
 }
 
 export default Garage;

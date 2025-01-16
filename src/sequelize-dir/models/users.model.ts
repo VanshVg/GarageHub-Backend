@@ -92,6 +92,12 @@ class User extends Model<UsersAttributes, RequiredUserAttributesType> {
 
   @HasMany(() => Garage)
   garages: Garage[];
+
+  readonly toJSON = () => {
+    const values = Object.assign({}, this.get());
+    delete values.password;
+    return values;
+  };
 }
 
 export default User;

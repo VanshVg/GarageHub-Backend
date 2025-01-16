@@ -44,6 +44,11 @@ class City extends Model<CityAttributes, RequiredCityAttributesType> {
 
   @BelongsTo(() => State)
   state: State;
+
+  readonly toJSON = () => {
+    const values = Object.assign({}, this.get());
+    return values;
+  };
 }
 
 export default City;
