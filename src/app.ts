@@ -6,6 +6,13 @@ import { logger } from "./common/logger";
 import { PORT } from "./config";
 import * as http from "http";
 import { passportMiddleware } from "./middlewares/passport.middleware";
+import User from "./sequelize-dir/models/users.model";
+
+declare module "express" {
+  interface Request {
+    user: User;
+  }
+}
 
 const port: string | number = PORT || 8000;
 

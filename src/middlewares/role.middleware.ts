@@ -4,9 +4,9 @@ import { GeneralResponseEnum, UserRoles } from "@/common/types";
 import User from "@/sequelize-dir/models/users.model";
 import { NextFunction, Request, Response } from "express";
 
-export const roleGuard = (role: UserRoles) => {
+export const roleGuard = (role: UserRoles[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    if ((req.user as User).role !== role) {
+    if (!role.includes(req?.user?.role)) {
       return generalResponse(
         res,
         null,
