@@ -26,3 +26,17 @@ export const createGarageSchema = Joi.object({
 }).options({
   abortEarly: false,
 });
+
+export const updateGarageSchema = Joi.object({
+  name: joiData.name,
+  description: joiData.description,
+  contact_no: joiData.contact_no,
+  email: joiData.email,
+  address: joiData.address,
+  city: joiData.city,
+  pincode: joiData.pincode,
+  start_time: joiData.start_time,
+  end_time: joiData.end_time,
+}).options({
+  abortEarly: false,
+});
