@@ -13,6 +13,7 @@ import {
 } from "@/repositories/garages.repository";
 import moment from "moment";
 import { ICreateGarageBody, IUpdateGarageBody } from "../types";
+import { GarageStatus } from "@/sequelize-dir/models/types/garages.type";
 
 export const addGarage = catchAsync(async (req: Request, res: Response) => {
   const {
@@ -84,7 +85,7 @@ export const getGarage = catchAsync(async (req: Request, res: Response) => {
 
   return generalResponse(
     res,
-    { data: garage },
+    garage,
     GARAGE_MESSAGE.GARAGE_FOUND_SUCCESSFUL,
     GeneralResponseEnum.success,
     false,
@@ -114,7 +115,7 @@ export const listOwnerGarages = catchAsync(
 
     return generalResponse(
       res,
-      { data: garages },
+      garages,
       GARAGE_MESSAGE.OWNER_GARAGE_FOUND_SUCCESSFUL,
       GeneralResponseEnum.success,
       false,
@@ -139,7 +140,7 @@ export const listGarages = catchAsync(async (req: Request, res: Response) => {
 
   return generalResponse(
     res,
-    { data: garages },
+    garages,
     GARAGE_MESSAGE.GARAGE_FOUND_SUCCESSFUL,
     GeneralResponseEnum.success,
     false,
@@ -208,7 +209,7 @@ export const updateGarageDetails = catchAsync(
       cityId = cityData.id;
     }
 
-    await updateGarage(
+    const updatedGarage = await updateGarage(
       {
         name: name || garage.name,
         description: description || garage.description,
@@ -227,14 +228,9 @@ export const updateGarageDetails = catchAsync(
       { where: { id: garageId } }
     );
 
-    const updatedGarage = await findOneGarage({
-      where: { id: garageId },
-      raw: true,
-    });
-
     return generalResponse(
       res,
-      { data: updatedGarage },
+      updatedGarage[1][0],
       GARAGE_MESSAGE.GARAGE_UPDATE_SUCCESSFUL,
       GeneralResponseEnum.success,
       true,
@@ -282,3 +278,52 @@ export const removeGarage = catchAsync(async (req: Request, res: Response) => {
     200
   );
 });
+
+export const changeGarageStatus = catchAsync(
+  async (req: Request, res: Response) => {
+    const { garageId } = req.params;
+    const { id } = req.user;
+
+    const garage = await findOneGarage({ where: { id: garageId }, raw: true });
+    if (!garage) {
+      return generalResponse(
+        res,
+        null,
+        GARAGE_MESSAGE.GARAGE_NOT_FOUND,
+        GeneralResponseEnum.error,
+        true,
+        404
+      );
+    }
+
+    if (garage.owner_id !== id) {
+      return generalResponse(
+        res,
+        null,
+        GARAGE_MESSAGE.WRONG_OWNER,
+        GeneralResponseEnum.error,
+        true,
+        409
+      );
+    }
+
+    await updateGarage(
+      {
+        status:
+          garage.status === GarageStatus.Active
+            ? GarageStatus.Inactive
+            : GarageStatus.Active,
+      },
+      { where: { id: garageId } }
+    );
+
+    return generalResponse(
+      res,
+      null,
+      GARAGE_MESSAGE.STATUS_UPDATE_SUCCESSFUL,
+      GeneralResponseEnum.success,
+      true,
+      200
+    );
+  }
+);

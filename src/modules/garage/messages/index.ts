@@ -9,4 +9,5 @@ export const GARAGE_MESSAGE = Object.freeze({
   WRONG_OWNER: "You do not have permission to access this garage.",
   GARAGE_UPDATE_SUCCESSFUL: "Garage details updated successfully.",
   GARAGE_DELETE_SUCCESSFUL: "Garage has been deleted successfully.",
+  STATUS_UPDATE_SUCCESSFUL: "Garage status has been updated successfully.",
 });

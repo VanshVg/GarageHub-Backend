@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addGarage,
+  changeGarageStatus,
   getGarage,
   listGarages,
   listOwnerGarages,
@@ -26,12 +27,6 @@ const garageRoutes = () => {
     addGarage
   );
   garageRouter.get(
-    `${path}/:garageId`,
-    authMiddleware,
-    roleGuard([UserRoles.Customer, UserRoles.Owner]),
-    getGarage
-  );
-  garageRouter.get(
     `${path}/list/owner`,
     authMiddleware,
     roleGuard([UserRoles.Owner]),
@@ -42,6 +37,12 @@ const garageRoutes = () => {
     authMiddleware,
     roleGuard([UserRoles.Owner, UserRoles.Customer]),
     listGarages
+  );
+  garageRouter.get(
+    `${path}/:garageId`,
+    authMiddleware,
+    roleGuard([UserRoles.Customer, UserRoles.Owner]),
+    getGarage
   );
   garageRouter.put(
     `${path}/:garageId`,
@@ -55,6 +56,12 @@ const garageRoutes = () => {
     roleGuard([UserRoles.Owner]),
     validationMiddleware(updateGarageSchema),
     removeGarage
+  );
+  garageRouter.put(
+    `${path}/status/:garageId`,
+    authMiddleware,
+    roleGuard([UserRoles.Owner]),
+    changeGarageStatus
   );
 
   return garageRouter;
