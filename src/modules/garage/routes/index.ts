@@ -13,6 +13,7 @@ import { roleGuard } from "@/middlewares/role.middleware";
 import { UserRoles } from "@/common/types";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import { createGarageSchema, updateGarageSchema } from "../validation-schema";
+import { verifyOwnerMiddleware } from "@/middlewares/owner-verification.middleware";
 
 const garageRoutes = () => {
   const path = "/garage";
@@ -42,6 +43,7 @@ const garageRoutes = () => {
     `${path}/:garageId`,
     authMiddleware,
     roleGuard([UserRoles.Customer, UserRoles.Owner]),
+    verifyOwnerMiddleware(),
     getGarage
   );
   garageRouter.put(

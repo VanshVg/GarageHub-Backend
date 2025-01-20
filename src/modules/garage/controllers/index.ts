@@ -162,31 +162,7 @@ export const updateGarageDetails = catchAsync(
       start_time,
     } = req.body as IUpdateGarageBody;
     const { garageId } = req.params;
-    const { id } = req.user;
-
-    const garage = await findOneGarage({ where: { id: garageId }, raw: true });
-
-    if (!garage) {
-      return generalResponse(
-        res,
-        null,
-        GARAGE_MESSAGE.GARAGE_NOT_FOUND,
-        GeneralResponseEnum.error,
-        true,
-        404
-      );
-    }
-
-    if (garage.owner_id !== id) {
-      return generalResponse(
-        res,
-        null,
-        GARAGE_MESSAGE.WRONG_OWNER,
-        GeneralResponseEnum.error,
-        true,
-        409
-      );
-    }
+    const { garage } = req;
 
     let cityId = garage.city_id;
 
@@ -241,31 +217,6 @@ export const updateGarageDetails = catchAsync(
 
 export const removeGarage = catchAsync(async (req: Request, res: Response) => {
   const { garageId } = req.params;
-  const { id } = req.user;
-
-  const garage = await findOneGarage({ where: { id: garageId }, raw: true });
-
-  if (!garage) {
-    return generalResponse(
-      res,
-      null,
-      GARAGE_MESSAGE.GARAGE_NOT_FOUND,
-      GeneralResponseEnum.error,
-      true,
-      404
-    );
-  }
-
-  if (garage.owner_id !== id) {
-    return generalResponse(
-      res,
-      null,
-      GARAGE_MESSAGE.WRONG_OWNER,
-      GeneralResponseEnum.error,
-      true,
-      409
-    );
-  }
 
   await deleteGarage({ where: { id: garageId } });
 
@@ -282,30 +233,7 @@ export const removeGarage = catchAsync(async (req: Request, res: Response) => {
 export const changeGarageStatus = catchAsync(
   async (req: Request, res: Response) => {
     const { garageId } = req.params;
-    const { id } = req.user;
-
-    const garage = await findOneGarage({ where: { id: garageId }, raw: true });
-    if (!garage) {
-      return generalResponse(
-        res,
-        null,
-        GARAGE_MESSAGE.GARAGE_NOT_FOUND,
-        GeneralResponseEnum.error,
-        true,
-        404
-      );
-    }
-
-    if (garage.owner_id !== id) {
-      return generalResponse(
-        res,
-        null,
-        GARAGE_MESSAGE.WRONG_OWNER,
-        GeneralResponseEnum.error,
-        true,
-        409
-      );
-    }
+    const { garage } = req;
 
     await updateGarage(
       {
