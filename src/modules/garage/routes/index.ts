@@ -43,13 +43,14 @@ const garageRoutes = () => {
     `${path}/:garageId`,
     authMiddleware,
     roleGuard([UserRoles.Customer, UserRoles.Owner]),
-    verifyOwnerMiddleware(),
+    verifyOwnerMiddleware,
     getGarage
   );
   garageRouter.put(
     `${path}/:garageId`,
     authMiddleware,
     roleGuard([UserRoles.Owner]),
+    verifyOwnerMiddleware,
     updateGarageDetails
   );
   garageRouter.delete(
@@ -57,12 +58,14 @@ const garageRoutes = () => {
     authMiddleware,
     roleGuard([UserRoles.Owner]),
     validationMiddleware(updateGarageSchema),
+    verifyOwnerMiddleware,
     removeGarage
   );
   garageRouter.put(
     `${path}/status/:garageId`,
     authMiddleware,
     roleGuard([UserRoles.Owner]),
+    verifyOwnerMiddleware,
     changeGarageStatus
   );
 

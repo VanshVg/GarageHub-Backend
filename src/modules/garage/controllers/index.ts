@@ -44,7 +44,7 @@ export const addGarage = catchAsync(async (req: Request, res: Response) => {
     );
   }
 
-  await createGarage({
+  const garage = await createGarage({
     name,
     owner_id: id,
     description,
@@ -59,7 +59,7 @@ export const addGarage = catchAsync(async (req: Request, res: Response) => {
 
   return generalResponse(
     res,
-    null,
+    garage,
     GARAGE_MESSAGE.CREATE_GARAGE_SUCCESS,
     GeneralResponseEnum.success,
     true,
