@@ -6,7 +6,7 @@
   },
   "compilerOptions": {
     "target": "ES2021",
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types", "src/common/types"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
@@ -37,6 +37,11 @@
       "@middlewares/*": ["middlewares/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.json", ".env"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.json",
+    "src/common/types/**/*.d.ts",
+    ".env"
+  ],
   "exclude": ["node_modules", "src/http", "src/logs", "src/tests"]
 }

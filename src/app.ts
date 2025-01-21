@@ -5,6 +5,7 @@ import { errorMiddleware } from "./middlewares/error.middleware";
 import { logger } from "./common/logger";
 import { PORT } from "./config";
 import * as http from "http";
+import { passportMiddleware } from "./middlewares/passport.middleware";
 
 const port: string | number = PORT || 8000;
 
@@ -26,10 +27,15 @@ const initializeErrorHandling = (app: Application) => {
   app.use(errorMiddleware);
 };
 
+const initializePassport = () => {
+  passportMiddleware();
+};
+
 export const initializeApp = async (apiRouter: Router[], db: Sequelize) => {
   initializeMiddlewares(app);
   initializeRoutes(app, apiRouter);
   initializeErrorHandling(app);
+  initializePassport();
 
   app.listen(port, () => {
     logger.info(`🚀 App listening on port ${port}`);

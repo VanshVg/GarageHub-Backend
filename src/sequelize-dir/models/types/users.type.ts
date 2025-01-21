@@ -9,7 +9,7 @@ export interface UsersAttributes extends TimeStampAttributes {
   password: string;
   role?: UserRoles;
   verified: boolean;
-  reset_pass_token: string;
+  reset_pass_token?: string;
   last_login_date?: Date | string;
 }
 
