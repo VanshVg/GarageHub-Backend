@@ -5,35 +5,28 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
       await queryInterface.createTable(
-        "cities",
+        "service_categories",
         {
           id: {
             type: Sequelize.INTEGER,
             allowNull: false,
             primaryKey: true,
+            autoIncrement: true,
           },
-          name: { type: Sequelize.STRING, allowNull: false },
-          state_id: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-            references: {
-              model: "states",
-              key: "id",
-            },
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
-          },
-          latitude: { type: Sequelize.FLOAT, allowNull: false },
-          longitude: { type: Sequelize.FLOAT, allowNull: false },
+          name: { type: Sequelize.STRING, allowNull: false, unique: true },
+          label: { type: Sequelize.STRING, allowNull: false },
         },
         { transaction: t }
       );
+      await queryInterface.addIndex("service_categories", ["name"], {
+        transaction: t,
+      });
     });
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable("cities", {
+      await queryInterface.dropTable("service_categories", {
         transaction: t,
         cascade: true,
       });

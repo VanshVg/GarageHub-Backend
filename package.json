@@ -11,7 +11,8 @@
     "seed:user": "ts-node ./src/sequelize-dir/seeders/users.seeder.ts",
     "seed:state": "ts-node ./src/sequelize-dir/seeders/states.seeder.ts",
     "seed:city": "ts-node ./src/sequelize-dir/seeders/cities.seeder.ts",
-    "seed": "npm run seed:user && npm run seed:state && npm run seed:city"
+    "seed:service-category": "ts-node ./src/sequelize-dir/seeders/service-categories.seeder.ts",
+    "seed": "npm run seed:user && npm run seed:state && npm run seed:city && npm run seed:service-category"
   },
   "keywords": [],
   "author": "",

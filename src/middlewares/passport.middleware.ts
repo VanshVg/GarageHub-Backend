@@ -18,7 +18,10 @@ export const passportMiddleware = () => {
     "jwt",
     new JWTStrategy(options, async (req, payload, done) => {
       try {
-        const isUser = await findOneUser({ where: { email: payload.email } });
+        const isUser = await findOneUser({
+          where: { email: payload.data.email },
+          raw: true,
+        });
         if (!isUser) {
           done(null, false);
         } else {

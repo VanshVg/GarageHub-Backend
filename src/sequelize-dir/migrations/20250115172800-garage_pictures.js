@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
       await queryInterface.createTable(
-        "users",
+        "garage_pictures",
         {
           id: {
             type: Sequelize.INTEGER,
@@ -13,24 +13,25 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true,
           },
-          first_name: { type: Sequelize.STRING, allowNull: false },
-          last_name: { type: Sequelize.STRING, allowNull: false },
-          email: { type: Sequelize.STRING, allowNull: false },
-          password: { type: Sequelize.TEXT },
-          role: {
-            type: Sequelize.ENUM("Customer", "Owner"),
-            allowNull: true,
-          },
-          verified: {
-            type: Sequelize.BOOLEAN,
+          garage_id: {
+            type: Sequelize.INTEGER,
             allowNull: false,
-            defaultValue: false,
+            references: {
+              model: "garages",
+              key: "id",
+            },
+            onUpdate: "CASCADE",
+            onDelete: "CASCADE",
           },
-          reset_pass_token: { type: Sequelize.TEXT },
-          last_login_date: {
+          url: {
             type: Sequelize.STRING,
             allowNull: false,
-            defaultValue: Sequelize.NOW,
+            validate: { isUrl: true },
+            unique: true,
+          },
+          alt_text: {
+            type: Sequelize.STRING,
+            allowNull: true,
           },
           created_at: {
             type: Sequelize.DATE,
@@ -46,13 +47,7 @@ module.exports = {
         },
         { transaction: t }
       );
-      await queryInterface.addIndex("users", {
-        name: "unique_email_uk",
-        fields: ["email"],
-        unique: true,
-        where: {
-          deleted_at: null,
-        },
+      await queryInterface.addIndex("garage_pictures", ["url"], {
         transaction: t,
       });
     });
@@ -60,7 +55,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable("users", {
+      await queryInterface.dropTable("garage_pictures", {
         transaction: t,
         cascade: true,
       });

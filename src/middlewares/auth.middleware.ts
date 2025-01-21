@@ -27,6 +27,7 @@ export const authMiddleware = async (
           401
         );
       }
+
       if (!user.verified) {
         return generalResponse(
           res,

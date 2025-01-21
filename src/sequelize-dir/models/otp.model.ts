@@ -28,7 +28,7 @@ class Otp extends Model<OtpAttributes> {
   id: number;
 
   @AllowNull(false)
-  @Column(DataTypes.INTEGER)
+  @Column({ type: DataTypes.INTEGER, validate: { len: [6, 6] } })
   value: number;
 
   @AllowNull(false)
@@ -48,6 +48,11 @@ class Otp extends Model<OtpAttributes> {
 
   @BelongsTo(() => User)
   user: User;
+
+  readonly toJSON = () => {
+    const values = Object.assign({}, this.get());
+    return values;
+  };
 }
 
 export default Otp;
