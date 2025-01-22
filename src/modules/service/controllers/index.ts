@@ -5,7 +5,10 @@ import { findOneServiceCategory } from "@/repositories/service-categories.reposi
 import { generalResponse } from "@/common/helper/response.helper";
 import { SERVICE_MESSAGE } from "../messages";
 import { GeneralResponseEnum } from "@/common/types";
-import { createServices } from "@/repositories/services.repository";
+import {
+  createServices,
+  findAllServices,
+} from "@/repositories/services.repository";
 
 export const addServices = catchAsync(async (req: Request, res: Response) => {
   const { garage } = req;
@@ -45,3 +48,33 @@ export const addServices = catchAsync(async (req: Request, res: Response) => {
     200
   );
 });
+
+export const fetchGarageServices = catchAsync(
+  async (req: Request, res: Response) => {
+    const { garage } = req;
+
+    const services = await findAllServices({
+      where: { garage_id: garage.id },
+      raw: true,
+    });
+    if (services.length === 0) {
+      return generalResponse(
+        res,
+        null,
+        SERVICE_MESSAGE.NO_GARAGE_SERVICES,
+        GeneralResponseEnum.error,
+        true,
+        404
+      );
+    }
+
+    return generalResponse(
+      res,
+      services,
+      SERVICE_MESSAGE.SERVICES_FETCH_SUCCESS,
+      GeneralResponseEnum.success,
+      false,
+      200
+    );
+  }
+);
