@@ -4,7 +4,7 @@ import { GARAGE_MESSAGE } from "@/modules/garage/messages";
 import { findOneGarage } from "@/repositories/garages.repository";
 import { NextFunction, Request, Response } from "express";
 
-export const verifyOwnerMiddleware = async (
+export const verifyOwner = async (
   req: Request,
   res: Response,
   next: NextFunction

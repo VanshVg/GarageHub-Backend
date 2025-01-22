@@ -1,19 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { UsersAttributes } from "@/sequelize-dir/models/types/users.type";
 import { generalResponse } from "@/common/helper/response.helper";
 import { GeneralResponseEnum } from "@/common/types";
 import { AUTH_MIDDLEWARE_MESSAGES } from "@/common/messages";
+import User from "@/sequelize-dir/models/users.model";
 
-export const authMiddleware = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const auth = async (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate(
     "jwt",
     { session: false },
-    async (error, user: UsersAttributes) => {
+    async (error, user: User) => {
       if (error) {
         return next(error);
       }

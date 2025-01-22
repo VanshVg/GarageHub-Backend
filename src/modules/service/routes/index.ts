@@ -1,6 +1,6 @@
 import { UserRoles } from "@/common/types";
-import { authMiddleware } from "@/middlewares/auth.middleware";
-import { verifyOwnerMiddleware } from "@/middlewares/owner-verification.middleware";
+import { auth } from "@/middlewares/auth.middleware";
+import { verifyOwner } from "@/middlewares/owner-verification.middleware";
 import { roleGuard } from "@/middlewares/role.middleware";
 import { Router } from "express";
 import { addServices } from "../controllers";
@@ -12,9 +12,9 @@ const serviceRoutes = () => {
 
   serviceRouter.post(
     `${path}/:garageId`,
-    authMiddleware,
+    auth,
     roleGuard([UserRoles.Owner]),
-    verifyOwnerMiddleware,
+    verifyOwner,
     addServices
   );
 
