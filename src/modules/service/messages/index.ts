@@ -3,4 +3,6 @@ export const SERVICE_MESSAGE = Object.freeze({
   CREATE_SERVICE_SUCCESS: "Service created successfully.",
   NO_GARAGE_SERVICES: "This garage has no services.",
   SERVICES_FETCH_SUCCESS: "Fetched garage services successfully.",
+  SERVICE_NOT_FOUND: "The requested service could not be found.",
+  SERVICE_UPDATE_SUCCESSFUL: "Service details updated successfully.",
 });

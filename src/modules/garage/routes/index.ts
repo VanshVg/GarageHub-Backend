@@ -12,7 +12,7 @@ import { roleGuard } from "@/middlewares/role.middleware";
 import { UserRoles } from "@/common/types";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import { createGarageSchema, updateGarageSchema } from "../validation-schema";
-import { verifyOwner } from "@/middlewares/owner-verification.middleware";
+import { verifyOwner } from "@/middlewares/verification.middleware";
 import { auth } from "@/middlewares/auth.middleware";
 
 const garageRoutes = () => {

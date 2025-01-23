@@ -8,11 +8,13 @@ import * as http from "http";
 import { passportMiddleware } from "./middlewares/passport.middleware";
 import User from "./sequelize-dir/models/users.model";
 import Garage from "./sequelize-dir/models/garages.model";
+import Service from "./sequelize-dir/models/services.model";
 
 declare module "express" {
   interface Request {
     user: User;
-    garage: Garage;
+    garage?: Garage;
+    service?: Service;
   }
 }
 
