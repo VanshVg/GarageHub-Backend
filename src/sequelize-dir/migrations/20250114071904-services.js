@@ -40,6 +40,11 @@ module.exports = {
             type: Sequelize.ENUM("weeks", "days", "hours", "minutes"),
             allowNull: true,
           },
+          status: {
+            type: Sequelize.ENUM("available", "unavailable"),
+            allowNull: false,
+            defaultValue: "available",
+          },
           created_at: {
             type: Sequelize.DATE,
             allowNull: false,

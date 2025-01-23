@@ -7,6 +7,11 @@ export enum DurationUnit {
   Minutes = "minutes",
 }
 
+export enum ServiceStatus {
+  Available = "available",
+  Unavailable = "unavailable",
+}
+
 export interface ServiceAttributes extends TimeStampAttributes {
   id?: number;
   category_id: number;

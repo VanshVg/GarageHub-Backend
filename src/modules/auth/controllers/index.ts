@@ -12,7 +12,7 @@ import { createOtpData, findOneOtpData } from "@/repositories/otp.repository";
 // *** Common ***
 import { generalResponse } from "@/common/helper/response.helper";
 import { AUTH_MESSAGE } from "../messages";
-import { GeneralResponseEnum } from "@/common/types";
+import { GeneralResponseType } from "@/common/types";
 import { IOtpVerificationBody } from "../types";
 import { randomNumberGenerator } from "@/common/helper/number.helper";
 import { sendEmail } from "@/common/helper/mail.helper";
@@ -61,7 +61,7 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       AUTH_MESSAGE.USER_EXISTS,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       409
     );
@@ -78,7 +78,7 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
     res,
     null,
     AUTH_MESSAGE.SIGNUP_SUCCESS,
-    GeneralResponseEnum.success,
+    GeneralResponseType.Success,
     false,
     200
   );
@@ -94,7 +94,7 @@ export const updateUserRole = catchAsync(
         res,
         null,
         AUTH_MESSAGE.USER_NOT_FOUND,
-        GeneralResponseEnum.error,
+        GeneralResponseType.Error,
         true,
         404
       );
@@ -126,7 +126,7 @@ export const updateUserRole = catchAsync(
         ),
       },
       AUTH_MESSAGE.EMAIL_SUCCESS,
-      GeneralResponseEnum.success,
+      GeneralResponseType.Success,
       true,
       200
     );
@@ -150,7 +150,7 @@ export const otpVerification = catchAsync(
         res,
         null,
         AUTH_MESSAGE.INVALID_TOKEN,
-        GeneralResponseEnum.error,
+        GeneralResponseType.Error,
         true,
         401
       );
@@ -165,7 +165,7 @@ export const otpVerification = catchAsync(
         res,
         null,
         AUTH_MESSAGE.USER_NOT_FOUND,
-        GeneralResponseEnum.error,
+        GeneralResponseType.Error,
         true,
         404
       );
@@ -180,7 +180,7 @@ export const otpVerification = catchAsync(
         res,
         null,
         AUTH_MESSAGE.INVALID_OTP,
-        GeneralResponseEnum.error,
+        GeneralResponseType.Error,
         true,
         400
       );
@@ -193,7 +193,7 @@ export const otpVerification = catchAsync(
         res,
         null,
         AUTH_MESSAGE.OTP_EXPIRED,
-        GeneralResponseEnum.error,
+        GeneralResponseType.Error,
         true,
         400
       );
@@ -206,7 +206,7 @@ export const otpVerification = catchAsync(
       res,
       null,
       AUTH_MESSAGE.VERIFIED_SUCCESS,
-      GeneralResponseEnum.success,
+      GeneralResponseType.Success,
       true,
       200
     );
@@ -227,7 +227,7 @@ export const resendOtp = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       AUTH_MESSAGE.INVALID_TOKEN,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       401
     );
@@ -242,7 +242,7 @@ export const resendOtp = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       AUTH_MESSAGE.USER_NOT_FOUND,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
@@ -279,7 +279,7 @@ export const resendOtp = catchAsync(async (req: Request, res: Response) => {
     res,
     null,
     AUTH_MESSAGE.EMAIL_SUCCESS,
-    GeneralResponseEnum.success,
+    GeneralResponseType.Success,
     true,
     200
   );
@@ -296,7 +296,7 @@ export const login = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       AUTH_MESSAGE.INVALID_CREDENTIALS,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
@@ -306,7 +306,7 @@ export const login = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       AUTH_MESSAGE.NOT_ACTIVATED,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
@@ -318,7 +318,7 @@ export const login = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       AUTH_MESSAGE.INVALID_CREDENTIALS,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
@@ -345,7 +345,7 @@ export const login = catchAsync(async (req: Request, res: Response) => {
       accessToken,
     },
     AUTH_MESSAGE.LOGIN_SUCCESS,
-    GeneralResponseEnum.success,
+    GeneralResponseType.Success,
     true,
     200
   );
@@ -361,7 +361,7 @@ export const forgotPassword = catchAsync(
         res,
         null,
         AUTH_MESSAGE.USER_NOT_FOUND,
-        GeneralResponseEnum.error,
+        GeneralResponseType.Error,
         true,
         404
       );
@@ -372,7 +372,7 @@ export const forgotPassword = catchAsync(
         res,
         null,
         AUTH_MESSAGE.NOT_ACTIVATED,
-        GeneralResponseEnum.error,
+        GeneralResponseType.Error,
         true,
         404
       );
@@ -412,7 +412,7 @@ export const forgotPassword = catchAsync(
         ),
       },
       AUTH_MESSAGE.EMAIL_SUCCESS,
-      GeneralResponseEnum.success,
+      GeneralResponseType.Success,
       true,
       200
     );
@@ -434,7 +434,7 @@ export const resetPassword = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       AUTH_MESSAGE.INVALID_TOKEN,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       401
     );
@@ -449,7 +449,7 @@ export const resetPassword = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       AUTH_MESSAGE.USER_NOT_FOUND,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
@@ -462,7 +462,7 @@ export const resetPassword = catchAsync(async (req: Request, res: Response) => {
     res,
     null,
     AUTH_MESSAGE.PASSWORD_RESET_SUCCESS,
-    GeneralResponseEnum.success,
+    GeneralResponseType.Success,
     true,
     200
   );

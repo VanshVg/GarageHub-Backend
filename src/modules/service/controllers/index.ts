@@ -4,7 +4,7 @@ import { ICreateServiceBody } from "../types";
 import { findOneServiceCategory } from "@/repositories/service-categories.repository";
 import { generalResponse } from "@/common/helper/response.helper";
 import { SERVICE_MESSAGE } from "../messages";
-import { GeneralResponseEnum } from "@/common/types";
+import { GeneralResponseType } from "@/common/types";
 import {
   createServices,
   findAllServices,
@@ -23,7 +23,7 @@ export const addServices = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       SERVICE_MESSAGE.CATEGORY_UNAVAILABLE,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
@@ -43,7 +43,7 @@ export const addServices = catchAsync(async (req: Request, res: Response) => {
     res,
     service,
     SERVICE_MESSAGE.CREATE_SERVICE_SUCCESS,
-    GeneralResponseEnum.success,
+    GeneralResponseType.Success,
     true,
     200
   );
@@ -62,7 +62,7 @@ export const fetchGarageServices = catchAsync(
         res,
         null,
         SERVICE_MESSAGE.NO_GARAGE_SERVICES,
-        GeneralResponseEnum.error,
+        GeneralResponseType.Error,
         true,
         404
       );
@@ -72,7 +72,7 @@ export const fetchGarageServices = catchAsync(
       res,
       services,
       SERVICE_MESSAGE.SERVICES_FETCH_SUCCESS,
-      GeneralResponseEnum.success,
+      GeneralResponseType.Success,
       false,
       200
     );

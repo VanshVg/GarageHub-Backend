@@ -1,5 +1,5 @@
 import { generalResponse } from "@/common/helper/response.helper";
-import { GeneralResponseEnum } from "@/common/types";
+import { GeneralResponseType } from "@/common/types";
 import { GARAGE_MESSAGE } from "@/modules/garage/messages";
 import { findOneGarage } from "@/repositories/garages.repository";
 import { NextFunction, Request, Response } from "express";
@@ -19,7 +19,7 @@ export const verifyOwner = async (
       res,
       null,
       GARAGE_MESSAGE.GARAGE_NOT_FOUND,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
@@ -30,7 +30,7 @@ export const verifyOwner = async (
       res,
       null,
       GARAGE_MESSAGE.WRONG_OWNER,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       409
     );

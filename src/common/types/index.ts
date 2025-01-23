@@ -3,7 +3,7 @@ export enum UserRoles {
   Owner = "Owner",
 }
 
-export enum GeneralResponseEnum {
-  success = "success",
-  error = "error",
+export enum GeneralResponseType {
+  Success = "success",
+  Error = "error",
 }
