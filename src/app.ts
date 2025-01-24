@@ -1,11 +1,11 @@
 import express, { Application, Router } from "express";
 import { Sequelize } from "sequelize";
 import cors from "cors";
-import { errorMiddleware } from "./middlewares/error.middleware";
+import { errorMiddleware } from "./common/middlewares/error.middleware";
 import { logger } from "./common/logger";
 import { PORT } from "./config";
 import * as http from "http";
-import { passportMiddleware } from "./middlewares/passport.middleware";
+import { passportMiddleware } from "./common/middlewares/passport.middleware";
 import User from "./sequelize-dir/models/users.model";
 import Garage from "./sequelize-dir/models/garages.model";
 import Service from "./sequelize-dir/models/services.model";

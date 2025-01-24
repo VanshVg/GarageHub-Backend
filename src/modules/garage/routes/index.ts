@@ -8,12 +8,12 @@ import {
   removeGarage,
   updateGarageDetails,
 } from "../controllers";
-import { roleGuard } from "@/middlewares/role.middleware";
+import { roleGuard } from "@/common/middlewares/role.middleware";
 import { UserRoles } from "@/common/types";
-import validationMiddleware from "@/middlewares/validation.middleware";
+import validationMiddleware from "@/common/middlewares/validation.middleware";
 import { createGarageSchema, updateGarageSchema } from "../validation-schema";
-import { verifyOwner } from "@/middlewares/verification.middleware";
-import { auth } from "@/middlewares/auth.middleware";
+import { auth } from "@/common/middlewares/auth.middleware";
+import { verifyOwner } from "../middlewares";
 
 const garageRoutes = () => {
   const path = "/garage";

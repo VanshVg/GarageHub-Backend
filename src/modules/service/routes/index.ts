@@ -1,16 +1,14 @@
 import { UserRoles } from "@/common/types";
-import { auth } from "@/middlewares/auth.middleware";
-import {
-  verifyGarageService,
-  verifyOwner,
-} from "@/middlewares/verification.middleware";
-import { roleGuard } from "@/middlewares/role.middleware";
+import { auth } from "@/common/middlewares/auth.middleware";
+import { roleGuard } from "@/common/middlewares/role.middleware";
 import { Router } from "express";
 import {
   addServices,
   fetchGarageServices,
   updateGarageService,
 } from "../controllers";
+import { verifyOwner } from "@/modules/garage/middlewares";
+import { verifyGarageService } from "../middlewares";
 
 const serviceRoutes = () => {
   const path = "/service";
