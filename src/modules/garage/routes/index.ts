@@ -12,8 +12,7 @@ import { roleGuard } from "@/common/middlewares/role.middleware";
 import { UserRoles } from "@/common/types";
 import validationMiddleware from "@/common/middlewares/validation.middleware";
 import { createGarageSchema, updateGarageSchema } from "../validation-schema";
-import { auth } from "@/common/middlewares/auth.middleware";
-import { verifyOwner } from "../middlewares";
+import { garageAuth, userAuth } from "@/common/middlewares/auth.middleware";
 
 const garageRoutes = () => {
   const path = "/garage";
@@ -22,50 +21,50 @@ const garageRoutes = () => {
 
   garageRouter.post(
     `${path}`,
-    auth,
+    userAuth,
     roleGuard([UserRoles.Owner]),
     validationMiddleware(createGarageSchema),
     addGarage
   );
   garageRouter.get(
     `${path}/list/owner`,
-    auth,
+    userAuth,
     roleGuard([UserRoles.Owner]),
     listOwnerGarages
   );
   garageRouter.get(
     `${path}/list`,
-    auth,
+    userAuth,
     roleGuard([UserRoles.Owner, UserRoles.Customer]),
     listGarages
   );
   garageRouter.get(
     `${path}/:garageId`,
-    auth,
+    userAuth,
     roleGuard([UserRoles.Customer, UserRoles.Owner]),
-    verifyOwner,
+    garageAuth,
     getGarage
   );
   garageRouter.put(
     `${path}/:garageId`,
-    auth,
+    userAuth,
     roleGuard([UserRoles.Owner]),
-    verifyOwner,
+    garageAuth,
     updateGarageDetails
   );
   garageRouter.delete(
     `${path}/:garageId`,
-    auth,
+    userAuth,
     roleGuard([UserRoles.Owner]),
     validationMiddleware(updateGarageSchema),
-    verifyOwner,
+    garageAuth,
     removeGarage
   );
   garageRouter.put(
     `${path}/status/:garageId`,
-    auth,
+    userAuth,
     roleGuard([UserRoles.Owner]),
-    verifyOwner,
+    garageAuth,
     changeGarageStatus
   );
 

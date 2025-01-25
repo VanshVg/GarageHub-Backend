@@ -1,5 +1,4 @@
 import { UserRoles } from "@/common/types";
-import { auth } from "@/common/middlewares/auth.middleware";
 import { roleGuard } from "@/common/middlewares/role.middleware";
 import { Router } from "express";
 import {
@@ -7,8 +6,11 @@ import {
   fetchGarageServices,
   updateGarageService,
 } from "../controllers";
-import { verifyOwner } from "@/modules/garage/middlewares";
-import { verifyGarageService } from "../middlewares";
+import {
+  garageAuth,
+  serviceAuth,
+  userAuth,
+} from "@/common/middlewares/auth.middleware";
 
 const serviceRoutes = () => {
   const path = "/service";
@@ -17,24 +19,23 @@ const serviceRoutes = () => {
 
   serviceRouter.post(
     `${path}/:garageId`,
-    auth,
+    userAuth,
     roleGuard([UserRoles.Owner]),
-    verifyOwner,
+    garageAuth,
     addServices
   );
   serviceRouter.get(
     `${path}/:garageId`,
-    auth,
+    userAuth,
     roleGuard([UserRoles.Customer, UserRoles.Owner]),
-    verifyOwner,
+    garageAuth,
     fetchGarageServices
   );
   serviceRouter.put(
-    `${path}/:garageId/:serviceId`,
-    auth,
+    `${path}/:serviceId`,
+    userAuth,
     roleGuard([UserRoles.Customer, UserRoles.Owner]),
-    verifyOwner,
-    verifyGarageService,
+    serviceAuth,
     updateGarageService
   );
 
