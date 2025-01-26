@@ -3,6 +3,7 @@ import { roleGuard } from "@/common/middlewares/role.middleware";
 import { Router } from "express";
 import {
   addServices,
+  changeServiceStatus,
   fetchGarageServices,
   updateGarageService,
 } from "../controllers";
@@ -37,6 +38,13 @@ const serviceRoutes = () => {
     roleGuard([UserRoles.Customer, UserRoles.Owner]),
     serviceAuth,
     updateGarageService
+  );
+  serviceRouter.put(
+    `${path}/status/:garageId`,
+    userAuth,
+    roleGuard([UserRoles.Owner]),
+    serviceAuth,
+    changeServiceStatus
   );
 
   return serviceRouter;

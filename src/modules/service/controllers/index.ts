@@ -10,6 +10,7 @@ import {
   findAllServices,
   updateServices,
 } from "@/repositories/services.repository";
+import { ServiceStatus } from "@/sequelize-dir/models/types/services.type";
 
 export const addServices = catchAsync(async (req: Request, res: Response) => {
   const { garage } = req;
@@ -124,6 +125,31 @@ export const updateGarageService = catchAsync(
       res,
       updatedService[1][0],
       SERVICE_MESSAGE.SERVICE_UPDATE_SUCCESSFUL,
+      GeneralResponseType.Success,
+      true,
+      200
+    );
+  }
+);
+
+export const changeServiceStatus = catchAsync(
+  async (req: Request, res: Response) => {
+    const { service } = req;
+
+    await updateServices(
+      {
+        status:
+          service.status === ServiceStatus.Available
+            ? ServiceStatus.Unavailable
+            : ServiceStatus.Available,
+      },
+      { where: { id: service.id } }
+    );
+
+    return generalResponse(
+      res,
+      null,
+      SERVICE_MESSAGE.STATUS_UPDATE_SUCCESSFUL,
       GeneralResponseType.Success,
       true,
       200

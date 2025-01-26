@@ -232,7 +232,6 @@ export const removeGarage = catchAsync(async (req: Request, res: Response) => {
 
 export const changeGarageStatus = catchAsync(
   async (req: Request, res: Response) => {
-    const { garageId } = req.params;
     const { garage } = req;
 
     await updateGarage(
@@ -242,7 +241,7 @@ export const changeGarageStatus = catchAsync(
             ? GarageStatus.Inactive
             : GarageStatus.Active,
       },
-      { where: { id: garageId } }
+      { where: { id: garage.id } }
     );
 
     return generalResponse(

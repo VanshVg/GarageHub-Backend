@@ -21,6 +21,7 @@ export interface ServiceAttributes extends TimeStampAttributes {
   price: number;
   duration: number;
   duration_unit: DurationUnit;
+  status: ServiceStatus;
 }
 
 export type RequiredServiceAttributesType = RequiredKeyType<
