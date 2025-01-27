@@ -6,4 +6,5 @@ export const SERVICE_MESSAGE = Object.freeze({
   SERVICE_NOT_FOUND: "The requested service could not be found.",
   SERVICE_UPDATE_SUCCESSFUL: "Service details updated successfully.",
   STATUS_UPDATE_SUCCESSFUL: "Service status has been updated successfully.",
+  SERVICE_DELETE_SUCCESSFUL: "Service has been deleted successfully.",
 });

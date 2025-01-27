@@ -7,6 +7,7 @@ import { SERVICE_MESSAGE } from "../messages";
 import { GeneralResponseType } from "@/common/types";
 import {
   createServices,
+  deleteServices,
   findAllServices,
   updateServices,
 } from "@/repositories/services.repository";
@@ -150,6 +151,23 @@ export const changeServiceStatus = catchAsync(
       res,
       null,
       SERVICE_MESSAGE.STATUS_UPDATE_SUCCESSFUL,
+      GeneralResponseType.Success,
+      true,
+      200
+    );
+  }
+);
+
+export const removeGarageService = catchAsync(
+  async (req: Request, res: Response) => {
+    const { service } = req;
+
+    await deleteServices({ where: { id: service.id } });
+
+    return generalResponse(
+      res,
+      null,
+      SERVICE_MESSAGE.SERVICE_DELETE_SUCCESSFUL,
       GeneralResponseType.Success,
       true,
       200

@@ -5,6 +5,7 @@ import {
   addServices,
   changeServiceStatus,
   fetchGarageServices,
+  removeGarageService,
   updateGarageService,
 } from "../controllers";
 import {
@@ -40,11 +41,18 @@ const serviceRoutes = () => {
     updateGarageService
   );
   serviceRouter.put(
-    `${path}/status/:garageId`,
+    `${path}/status/:serviceId`,
     userAuth,
     roleGuard([UserRoles.Owner]),
     serviceAuth,
     changeServiceStatus
+  );
+  serviceRouter.delete(
+    `${path}/:serviceId`,
+    userAuth,
+    roleGuard([UserRoles.Owner]),
+    serviceAuth,
+    removeGarageService
   );
 
   return serviceRouter;
