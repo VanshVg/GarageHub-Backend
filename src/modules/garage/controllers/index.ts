@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { findOneCity } from "@/repositories/cities.repository";
 import { generalResponse } from "@/common/helper/response.helper";
 import { GARAGE_MESSAGE } from "../messages";
-import { GeneralResponseEnum } from "@/common/types";
+import { GeneralResponseType } from "@/common/types";
 import {
   createGarage,
   deleteGarage,
@@ -38,13 +38,13 @@ export const addGarage = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       GARAGE_MESSAGE.CITY_UNAVAILABLE,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
   }
 
-  await createGarage({
+  const garage = await createGarage({
     name,
     owner_id: id,
     description,
@@ -59,9 +59,9 @@ export const addGarage = catchAsync(async (req: Request, res: Response) => {
 
   return generalResponse(
     res,
-    null,
+    garage,
     GARAGE_MESSAGE.CREATE_GARAGE_SUCCESS,
-    GeneralResponseEnum.success,
+    GeneralResponseType.Success,
     true,
     200
   );
@@ -77,7 +77,7 @@ export const getGarage = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       GARAGE_MESSAGE.GARAGE_NOT_FOUND,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
@@ -87,7 +87,7 @@ export const getGarage = catchAsync(async (req: Request, res: Response) => {
     res,
     garage,
     GARAGE_MESSAGE.GARAGE_FOUND_SUCCESSFUL,
-    GeneralResponseEnum.success,
+    GeneralResponseType.Success,
     false,
     200
   );
@@ -107,7 +107,7 @@ export const listOwnerGarages = catchAsync(
         res,
         null,
         GARAGE_MESSAGE.NO_OWNER_GARAGE_EXISTS,
-        GeneralResponseEnum.error,
+        GeneralResponseType.Error,
         true,
         404
       );
@@ -117,7 +117,7 @@ export const listOwnerGarages = catchAsync(
       res,
       garages,
       GARAGE_MESSAGE.OWNER_GARAGE_FOUND_SUCCESSFUL,
-      GeneralResponseEnum.success,
+      GeneralResponseType.Success,
       false,
       200
     );
@@ -132,7 +132,7 @@ export const listGarages = catchAsync(async (req: Request, res: Response) => {
       res,
       null,
       GARAGE_MESSAGE.NO_GARAGE_EXISTS,
-      GeneralResponseEnum.error,
+      GeneralResponseType.Error,
       true,
       404
     );
@@ -142,7 +142,7 @@ export const listGarages = catchAsync(async (req: Request, res: Response) => {
     res,
     garages,
     GARAGE_MESSAGE.GARAGE_FOUND_SUCCESSFUL,
-    GeneralResponseEnum.success,
+    GeneralResponseType.Success,
     false,
     200
   );
@@ -176,7 +176,7 @@ export const updateGarageDetails = catchAsync(
           res,
           null,
           GARAGE_MESSAGE.CITY_UNAVAILABLE,
-          GeneralResponseEnum.error,
+          GeneralResponseType.Error,
           true,
           404
         );
@@ -208,7 +208,7 @@ export const updateGarageDetails = catchAsync(
       res,
       updatedGarage[1][0],
       GARAGE_MESSAGE.GARAGE_UPDATE_SUCCESSFUL,
-      GeneralResponseEnum.success,
+      GeneralResponseType.Success,
       true,
       200
     );
@@ -224,7 +224,7 @@ export const removeGarage = catchAsync(async (req: Request, res: Response) => {
     res,
     null,
     GARAGE_MESSAGE.GARAGE_DELETE_SUCCESSFUL,
-    GeneralResponseEnum.success,
+    GeneralResponseType.Success,
     true,
     200
   );
@@ -232,7 +232,6 @@ export const removeGarage = catchAsync(async (req: Request, res: Response) => {
 
 export const changeGarageStatus = catchAsync(
   async (req: Request, res: Response) => {
-    const { garageId } = req.params;
     const { garage } = req;
 
     await updateGarage(
@@ -242,14 +241,14 @@ export const changeGarageStatus = catchAsync(
             ? GarageStatus.Inactive
             : GarageStatus.Active,
       },
-      { where: { id: garageId } }
+      { where: { id: garage.id } }
     );
 
     return generalResponse(
       res,
       null,
       GARAGE_MESSAGE.STATUS_UPDATE_SUCCESSFUL,
-      GeneralResponseEnum.success,
+      GeneralResponseType.Success,
       true,
       200
     );

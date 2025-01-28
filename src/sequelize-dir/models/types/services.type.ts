@@ -7,6 +7,11 @@ export enum DurationUnit {
   Minutes = "minutes",
 }
 
+export enum ServiceStatus {
+  Available = "available",
+  Unavailable = "unavailable",
+}
+
 export interface ServiceAttributes extends TimeStampAttributes {
   id?: number;
   category_id: number;
@@ -16,6 +21,7 @@ export interface ServiceAttributes extends TimeStampAttributes {
   price: number;
   duration: number;
   duration_unit: DurationUnit;
+  status: ServiceStatus;
 }
 
 export type RequiredServiceAttributesType = RequiredKeyType<

@@ -8,7 +8,7 @@ import {
   signup,
   updateUserRole,
 } from "../controllers";
-import validationMiddleware from "@/middlewares/validation.middleware";
+import validationMiddleware from "@/common/middlewares/validation.middleware";
 import {
   forgotPasswordSchema,
   loginSchema,

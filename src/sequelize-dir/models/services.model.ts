@@ -15,6 +15,7 @@ import {
   DurationUnit,
   RequiredServiceAttributesType,
   ServiceAttributes,
+  ServiceStatus,
 } from "./types/services.type";
 import { DataTypes } from "sequelize";
 import ServiceCategory from "./service-categories.model";
@@ -61,6 +62,10 @@ class Service extends Model<ServiceAttributes, RequiredServiceAttributesType> {
   @AllowNull(false)
   @Column(DataTypes.ENUM(...Object.values(DurationUnit)))
   duration_unit: DurationUnit;
+
+  @AllowNull(false)
+  @Column(DataTypes.ENUM(...Object.values(ServiceStatus)))
+  status: ServiceStatus;
 
   @CreatedAt
   created_at: Date;
