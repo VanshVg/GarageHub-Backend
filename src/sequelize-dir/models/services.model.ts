@@ -6,6 +6,7 @@ import {
   CreatedAt,
   DeletedAt,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -19,6 +20,7 @@ import {
 import { DataTypes } from "sequelize";
 import ServiceCategory from "./service-categories.model";
 import Garage from "./garages.model";
+import Appointment from "./appointments.model";
 
 @Table({
   tableName: "services",
@@ -76,6 +78,9 @@ class Service extends Model<ServiceAttributes, RequiredServiceAttributesType> {
 
   @BelongsTo(() => Garage)
   garage: Garage;
+
+  @HasMany(() => Appointment)
+  appointments: Appointment[];
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());

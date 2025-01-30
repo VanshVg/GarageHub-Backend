@@ -23,6 +23,7 @@ import User from "./users.model";
 import City from "./cities.model";
 import Service from "./services.model";
 import GaragePicture from "./garage-pictures.model";
+import Appointment from "./appointments.model";
 
 @Table({
   tableName: "garages",
@@ -105,6 +106,9 @@ class Garage extends Model<GarageAttributes, RequiredGarageAttributesType> {
 
   @HasMany(() => GaragePicture)
   garage_pictures: GaragePicture[];
+
+  @HasMany(() => Appointment)
+  appointments: Appointment[];
 
   readonly toJSON = () => {
     const values = Object.assign({}, this.get());
