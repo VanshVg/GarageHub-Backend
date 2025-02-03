@@ -24,9 +24,7 @@ export const errorMiddleware = (
         `[${req.method}] ${req.path} >> StatusCode:: ${status}, Message:: ${message}, Toast:: ${toast}`
       );
       return generalResponse(res, data, message, "error", toast, status);
-    }
-    // axios Error
-    else if (error instanceof AxiosError) {
+    } else if (error instanceof AxiosError) {
       return generalResponse(
         res,
         {
